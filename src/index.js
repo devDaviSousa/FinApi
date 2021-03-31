@@ -48,8 +48,6 @@ app.post('/account', (request, response) => {
 
 })
 
-
-
 app.get("/statement", verifyIfExistsAccountCPF, (request, response) => {
 
   const { customer } = request;
@@ -113,9 +111,23 @@ app.put("/account", verifyIfExistsAccountCPF, (request, response) => {
   return response.status(200).send();
 })
 
-app.get('/account', (request, response) => {
+app.get('/account', verifyIfExistsAccountCPF, (request, response) => {
   const { customer } = request
   return response.json(customers)
 })
 
+app.delete("/account", verifyIfExistsAccountCPF, (request, response) => {
+  const { customer } = request;
+
+  customers.splice(customer, 1)
+
+  return response.status(200).json(customers)
+})
+
+app.get("/balance", verifyIfExistsAccountCPF, (request, response) => {
+  const { customer } = request;
+  const balace = getBalance(customer.statement)
+
+  return response.json(balace)
+})
 app.listen(3333, () => 'rodou')
