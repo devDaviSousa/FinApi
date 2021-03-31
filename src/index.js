@@ -48,10 +48,7 @@ app.post('/account', (request, response) => {
 
 })
 
-app.get('/account', (request, response) => {
 
-  return response.json(customers)
-})
 
 app.get("/statement", verifyIfExistsAccountCPF, (request, response) => {
 
@@ -107,5 +104,18 @@ app.get("/statement/date", verifyIfExistsAccountCPF, (request, response) => {
   return response.json(statement);
 })
 
+app.put("/account", verifyIfExistsAccountCPF, (request, response) => {
+  const { name } = request.body;
+  const { customer } = request
+
+  customer.name = name
+
+  return response.status(200).send();
+})
+
+app.get('/account', (request, response) => {
+  const { customer } = request
+  return response.json(customers)
+})
 
 app.listen(3333, () => 'rodou')
